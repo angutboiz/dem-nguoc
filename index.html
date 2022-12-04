@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Poppins:wght@300&display=swap"
+      rel="stylesheet"
+    />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="text">Sắp tết rồi, chỉ còn...</div>
+    <div class="clock">
+      <div class="clock-item">
+        <div id="days" class="num tes">21</div>
+        <div id="days-text" class="num dt">Ngày</div>
+      </div>
+
+      <div class="clock-item">
+        <div id="hours" class="num tes">21</div>
+        <div id="hours-text" class="num dt">Giờ</div>
+      </div>
+
+      <div class="clock-item">
+        <div id="mins" class="num tes">21</div>
+        <div id="mins-text" class="num dt">Phút</div>
+      </div>
+
+      <div class="clock-item">
+        <div id="secs" class="num tes">21</div>
+        <div id="secs-text" class="num dt">Giây</div>
+      </div>
+    </div>
+    <div id="tet"></div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script>
+      $(document).ready(() => {
+        var tet = [
+          {
+            name: "Mậu Tuất",
+            m1: Date.parse("Feb 16 2018 00:00:00"),
+          },
+          {
+            name: "Kỷ Hợi",
+            m1: Date.parse("Feb 5 2019 00:00:00"),
+          },
+          {
+            name: "Canh Tý",
+            m1: Date.parse("Jan 25 2020 00:00:00"),
+          },
+          {
+            name: "Quý Mão,",
+            m1: Date.parse("Feb 22 2023 00:00:00"),
+          },
+          {
+            name: "AAA",
+            m1: Date.parse("Jan 25 2023 00:00:00"),
+          },
+        ];
+        var tetlength = tet.length;
+        var setClock = function () {
+          var timeinterval = setInterval(function () {
+            var now = new Date();
+            var timenow = now.getTime();
+            for (var i = 0; i < tetlength; i++) {
+              var m30 = tet[i].m1 - 1000 * 60 * 60 * 24;
+              var m2 = tet[i].m1 + 1000 * 60 * 60 * 24;
+              var m4 = tet[i].m1 + 1000 * 60 * 60 * 24 * 3;
+              if (timenow <= m4) {
+                var timeend = tet[i].m1;
+                var istet = false;
+                var theyear = i + 2020;
+                var txttet = tet[i].name + " " + theyear;
+                var txttitle = "Đếm ngược Tết " + txttet;
+                var txttetornot = "Sắp Tết rồi!!! Chỉ còn…";
+                var txtdays = "Chúc";
+                var txthours = "Mừng";
+                var txtmins = "Năm";
+                var txtsecs = "Mới";
+                var txtdaystext = "Ngày";
+                var txthourstext = "Giờ";
+                var txtminstext = "Phút";
+                var txtsecstext = "Giây";
+                if (timenow >= tet[i].m1) {
+                  //m1-m4
+                  //theyear+=1;
+                  timeend = m4;
+
+                  //Bắt đầu từ mùng 3 là sắp hết Tết
+                  if (timenow >= m2) {
+                    txttetornot = "Sắp hết Tết rồi!!!";
+
+                    //Tết (từ giao thừa đến hết mùng 2)
+                  } else {
+                    //tet
+                    istet = true;
+                    txttetornot = "Tết rồi!!!Tết rồi!!!";
+                    txtdaystext = "Cung";
+                    txthourstext = "Chúc";
+                    txtminstext = "Tân";
+                    txtsecstext = "Xuân";
+                  }
+                } else {
+                }
+                if (!istet) {
+                  var t = timeend - timenow;
+                  txtsecs = Math.floor((t / 1000) % 60);
+                  txtmins = Math.floor((t / 1000 / 60) % 60);
+                  txthours = Math.floor((t / (1000 * 60 * 60)) % 24);
+                  txtdays = Math.floor(t / (1000 * 60 * 60 * 24));
+                }
+                $("#tetornot").text(txttetornot);
+                $("#days").text(txtdays);
+                $("#hours").text(txthours);
+                $("#mins").text(txtmins);
+                $("#secs").text(txtsecs);
+                $("#days-text").text(txtdaystext);
+                $("#hours-text").text(txthourstext);
+                $("#mins-text").text(txtminstext);
+                $("#secs-text").text(txtsecstext);
+                $("#tet").text(txttet);
+                if (timenow >= m30) {
+                  $("html").css({
+                    background:
+                      "radial-gradient(ellipse at bottom, #efe81d 0%, #f80f1f 100%)",
+                  });
+                  $(".clock").toggleClass("tet");
+                  $(".clock .text").toggleClass("tet");
+                }
+                document.title = txttitle;
+                $('meta[name="description"]').attr(
+                  "content",
+                  "Còn bao nhiêu ngày nữa đến Tết Nguyên Đán " + txttet + "?"
+                );
+                $('meta[property="og\\:title"]').attr("content", txttitle);
+                $('meta[property="og\\:description"]').attr(
+                  "content",
+                  "Còn bao nhiêu ngày nữa đến Tết Nguyên Đán " + txttet + "?"
+                );
+                $('meta[property="og\\:image"]').attr(
+                  "content",
+                  "https://www.saptet.com/Tulips.jpg"
+                );
+                break;
+              }
+            }
+          }, 1000);
+        };
+        setClock();
+        $(".clock").hover(function () {
+          $(this).toggleClass("colorlight");
+        });
+      });
+    </script>
+  </body>
+</html>
